@@ -45,5 +45,12 @@ public class CommitmentsController {
 			return Optional.ofNullable("Success").map(ResponseEntity::ok)
 					.orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
 		}
+		
+		@GetMapping(value ="/test1")
+		public ResponseEntity<String> testMapping(
+				) {
+			return Optional.ofNullable("Success").map(ResponseEntity::ok)
+					.orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
+		}
 	
 }
