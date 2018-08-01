@@ -6,9 +6,10 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -18,12 +19,15 @@ import com.reference.order.repository.OrderMongoRepository;
 @RunWith(MockitoJUnitRunner.class)
 public class OrderControllerTest {
 
-	@InjectMocks
 	OrderController orderControllerMock;
 
 	@Mock
 	OrderMongoRepository orderRepositoryMock;
-
+	@Before
+	public void init() {
+		//setUp("commitments");
+		orderControllerMock = new OrderController(orderRepositoryMock);
+	}
 	@Test
 	public void testAddOrder() throws Exception {
 
