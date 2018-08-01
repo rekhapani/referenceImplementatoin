@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: OrderMicroService
+Implementation-Version: 0.0.1
+Built-By: 168822
+Implementation-Vendor-Id: com.reference.order
+Build-Jdk: 1.8.0_172
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/OrderMicroService
+Created-By: Maven Integration for Eclipse
+
