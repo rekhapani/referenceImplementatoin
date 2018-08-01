@@ -12,11 +12,14 @@ import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.reference.order.entity.OrderEntity;
 import com.reference.order.repository.OrderMongoRepository;
+import org.springframework.test.context.ContextConfiguration;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = { TestSuiteConfig.class }, initializers = ConfigFileApplicationContextInitializer.class)
 public class OrderControllerTest {
 
 	OrderController orderControllerMock;
