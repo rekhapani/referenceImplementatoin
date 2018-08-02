@@ -158,10 +158,13 @@
         </execution>
         <execution>
             <id>jacoco-site</id>
-            <phase>package</phase>
+            <phase>test</phase>
             <goals>
                 <goal>report</goal>
             </goals>
+		 <configuration>
+                            <dataFile>${sonar.jacoco.reportPath}</dataFile>
+                        </configuration>
         </execution>
     </executions>
 </plugin>
