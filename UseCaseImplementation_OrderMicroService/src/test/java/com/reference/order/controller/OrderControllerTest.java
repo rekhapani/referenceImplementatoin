@@ -31,6 +31,7 @@ public class OrderControllerTest {
 		//setUp("commitments");
 		orderControllerMock = new OrderController(orderRepositoryMock);
 	}
+	
 	@Test
 	public void testAddOrder() throws Exception {
 
@@ -43,13 +44,27 @@ public class OrderControllerTest {
 		orderEntity.setOriginArea("INDIA");
 		orderEntity.setServiceOffering("TRADING");
 
-		OrderEntity locObj = new OrderEntity();
-		locObj = orderEntity;
+		//OrderEntity locObj = new OrderEntity();
+		OrderEntity locObj = createOrderEntity();
 
 		when(orderRepositoryMock.save(orderEntity)).thenReturn(locObj);
 		orderControllerMock.addOrder(orderEntity);
 
 		assertEquals("Add Order Result: ", orderEntity.getOrderId(), locObj.getOrderId());
+	}
+	
+	public OrderEntity createOrderEntity()
+	{
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setOrderId(1234567);
+		orderEntity.setBusinessUnit("Credit");
+		orderEntity.setCorporateAccountId(1234567890);
+		orderEntity.setDestinationArea("USA");
+		orderEntity.setLineOfBusinessId(123456789);
+		orderEntity.setOriginArea("INDIA");
+		orderEntity.setServiceOffering("TRADING");
+		return orderEntity;
+
 	}
 	
 	@Test
