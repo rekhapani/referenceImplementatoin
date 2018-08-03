@@ -27,7 +27,7 @@ bat(/"${mvnHome}\bin\mvn"  -f ${projName}\pom.xml clean install/)
        bat(/"${mvnHome}\bin\mvn" org.codehaus.mojo:cobertura-maven-plugin:cobertura test  org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.java.coveragePlugin=cobertura /) 
       
     }
-/*context="sonarqube/qualitygate"
+context="sonarqube/qualitygate"
      
         timeout(time: 2, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
             def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
@@ -37,7 +37,7 @@ bat(/"${mvnHome}\bin\mvn"  -f ${projName}\pom.xml clean install/)
             } else {
               
             }    
-        }*/
+        }
 }
 }
 stage('Results') {
