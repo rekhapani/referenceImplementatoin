@@ -15,7 +15,7 @@ def workName = "${env.WORKSPACE}"
    stage('Build') {
       // Run the maven build
       
-bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -f ${projName}\pom.xml clean install/)
+bat(/"${mvnHome}\bin\mvn"  -f ${projName}\pom.xml clean install/)
      
 }
  stage('SonarQube analysis') {
@@ -24,7 +24,7 @@ bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -f ${projName}\pom.xml cle
     def scannerHome = tool 'SONARSCANNER';
     withSonarQubeEnv('SONARQUBE 7.2') {
       
-       bat(/"${mvnHome}\bin\mvn" org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar/) 
+       bat(/"${mvnHome}\bin\mvn" org.codehaus.mojo:cobertura-maven-plugin:cobertura test  org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.java.coveragePlugin=cobertura /) 
       
     }
 /*context="sonarqube/qualitygate"
@@ -43,7 +43,7 @@ bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -f ${projName}\pom.xml cle
 stage('Results') {
       junit '**/target/surefire-reports/TEST-*.xml'
       archive 'target/*.jar'
-      cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
+      cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: true, failUnstable: true, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
 
    }
 
