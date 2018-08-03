@@ -56,7 +56,7 @@ public class OrderControllerTest {
 	public OrderEntity createOrderEntity()
 	{
 		OrderEntity orderEntity = new OrderEntity();
-		orderEntity.setOrderId(1234567);
+		orderEntity.setOrderId(123456);
 		orderEntity.setBusinessUnit("Credit");
 		orderEntity.setCorporateAccountId(1234567890);
 		orderEntity.setDestinationArea("USA");
