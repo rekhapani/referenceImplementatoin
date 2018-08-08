@@ -10,22 +10,27 @@ def workName = "${env.WORKSPACE}"
       // Get the Maven tool.
       // ** NOTE: This 'M3' Maven tool must be configured
       // **       in the global configuration.           
-      mvnHome = tool 'M3'
+      mvnHome = tool 'Maven'
    }
    stage('Build') {
       // Run the maven build
+          if (isUnix()) {
+         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore  -f ${projName}/pom.xml clean package"
+      } else {
+         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore -f ${projName}\pom.xml clean install/)
+      }
       
-bat(/"${mvnHome}\bin\mvn"  -f ${projName}\pom.xml clean install/)
+//bat(/"${mvnHome}\bin\mvn"  -f ${projName}\pom.xml clean install/)
      
 }
  stage('SonarQube analysis') {
-    ws("${workName}\\${projName}") {
+    ws("${workName}/${projName}") {
     // requires SonarQube Scanner 2.8+
-    def scannerHome = tool 'SONARSCANNER';
-    withSonarQubeEnv('SONARQUBE 7.2') {
+    def scannerHome = tool 'sonarscanner';
+    withSonarQubeEnv('Sonar') {
       
-       bat(/"${mvnHome}\bin\mvn" org.codehaus.mojo:cobertura-maven-plugin:cobertura test  org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.java.coveragePlugin=cobertura /) 
-      
+      // bat(/"${mvnHome}\bin\mvn" org.codehaus.mojo:cobertura-maven-plugin:cobertura test  org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.java.coveragePlugin=cobertura /) 
+       sh "'${mvnHome}/bin/mvn' org.codehaus.mojo:cobertura-maven-plugin:cobertura test org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.host.url=http://18.191.228.253:9000 -Dsonar.login=bdcc5dac18637722d6be3fa1df29c4a6b20a7068 "
     }
 /*context="sonarqube/qualitygate"
      
