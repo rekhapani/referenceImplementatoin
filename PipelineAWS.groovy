@@ -32,7 +32,7 @@ def workName = "${env.WORKSPACE}"
       // bat(/"${mvnHome}\bin\mvn" org.codehaus.mojo:cobertura-maven-plugin:cobertura test  org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.java.coveragePlugin=cobertura /) 
        sh "'${mvnHome}/bin/mvn' org.codehaus.mojo:cobertura-maven-plugin:cobertura test org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.host.url=http://18.191.228.253:9000 -Dsonar.login=bdcc5dac18637722d6be3fa1df29c4a6b20a7068 "
     }
-context="sonarqube/qualitygate"
+/*context="sonarqube/qualitygate"
      
         timeout(time: 2, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
             def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
@@ -42,7 +42,7 @@ context="sonarqube/qualitygate"
             } else {
               
             }    
-        }
+        }*/
 }
 }
 stage('Results') {
@@ -53,3 +53,12 @@ stage('Results') {
    }
 
 }
+sleep 10
+stage("SonarQube Quality Gate") { 
+    timeout(time: 1, unit: 'MINUTES') { 
+           def qg = waitForQualityGate() 
+           if (qg.status != 'OK') {
+              error "Pipeline aborted due to quality gate failure: ${qg.status}"
+           }
+         }
+     }
