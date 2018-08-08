@@ -40,6 +40,12 @@ context="sonarqube/qualitygate"
             if (qg.status != 'OK') {
              
                 error "Pipeline aborted due to quality gate failure: \${qg.status}"
+                   emailext(
+  to: 'rekha.k@cognizant.com',
+  subject: "Failure: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+  body: "details",
+  recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+)
             } else {
               
             }    
