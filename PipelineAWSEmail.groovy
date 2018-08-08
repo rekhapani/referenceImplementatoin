@@ -60,5 +60,14 @@ stage("SonarQube Quality Gate") {
            if (qg.status != 'OK') {
               error "Pipeline aborted due to quality gate failure: ${qg.status}"
            }
+           else
+           {
+                  emailext(
+  to: 'myemail@school.edu',
+  subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+  body: "details",
+  recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+)
+           }
          }
      }
