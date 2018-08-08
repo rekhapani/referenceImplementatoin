@@ -1,4 +1,5 @@
 node {
+        try{
        def mvnHome
    def projName = "${env.JOB_NAME}"
 def workName = "${env.WORKSPACE}"
@@ -32,17 +33,19 @@ def workName = "${env.WORKSPACE}"
       // bat(/"${mvnHome}\bin\mvn" org.codehaus.mojo:cobertura-maven-plugin:cobertura test  org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.java.coveragePlugin=cobertura /) 
        sh "'${mvnHome}/bin/mvn' org.codehaus.mojo:cobertura-maven-plugin:cobertura test org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.2:sonar -Dsonar.host.url=http://18.191.228.253:9000 -Dsonar.login=bdcc5dac18637722d6be3fa1df29c4a6b20a7068 "
     }
-/*context="sonarqube/qualitygate"
+           sleep 10
+context="sonarqube/qualitygate"
      
         timeout(time: 2, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
             def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
             if (qg.status != 'OK') {
              
                 error "Pipeline aborted due to quality gate failure: \${qg.status}"
+                  
             } else {
               
             }    
-        }*/
+        }
 }
 }
 stage('Results') {
@@ -51,23 +54,32 @@ stage('Results') {
       cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: true, failUnstable: true, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
 
    }
-
+ } catch (e) {
+// If there was an exception thrown, the build failed
+currentBuild.result = "FAILED"
+throw e
+} finally {
+// Success or failure, always send notifications
+notifyBuild(currentBuild.result)
+} 
 }
-sleep 10
+def notifyBuild(String buildStatus = 'STARTED') {
+// build status of null means successful
+buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+emailext(
+  to: 'rekha.k@cognizant.com',
+  subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+  body: "details",
+  recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+)
+}
+/*sleep 10
 stage("SonarQube Quality Gate") { 
     timeout(time: 1, unit: 'MINUTES') { 
            def qg = waitForQualityGate() 
            if (qg.status != 'OK') {
               error "Pipeline aborted due to quality gate failure: ${qg.status}"
            }
-           else
-           {
-                  emailext(
-  to: 'myemail@school.edu',
-  subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-  body: "details",
-  recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-)
-           }
          }
-     }
+     }*/
