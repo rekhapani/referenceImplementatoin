@@ -16,4 +16,4 @@ EXPOSE 8080
 VOLUME /tmp
 ADD /target/OrderMicroService-0.0.1.jar OrderMicroService-0.0.1.jar
 RUN sh -c 'touch /OrderMicroService-0.0.1.jar'
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/OrderMicroService-0.0.1.jar"]
+ENTRYPOINT ["/usr/bin/java","-Djava.security.egd=file:/dev/./urandom","-jar","/OrderMicroService-0.0.1.jar"]
