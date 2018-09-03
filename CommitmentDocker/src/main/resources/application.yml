@@ -1,0 +1,38 @@
+server:
+  port: 8082
+---  
+spring:
+    profiles: test
+name: test-YAML
+environment: test
+servers: 
+    - www.abc.test.com
+    - www.xyz.test.com
+ 
+---
+spring:
+    profiles: prod
+name: prod-YAML
+environment: production
+servers: 
+    - www.abc.com
+    - www.xyz.com
+    
+---
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://swatmsareference.ccostkt9wqae.us-east-2.rds.amazonaws.com/MSAReference
+    username: swatteam
+    password: Password1
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+      naming: 
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: true
+    show-sql: true
+      
