@@ -1,0 +1,10 @@
+Controller
+@PatchMapping(value = UrlMappingConstants.COMMITMENTS)
+	public ResponseEntity<CommitmentMassUpdateDTO> commitmentMassUpdate(
+			@RequestBody final CommitmentMassUpdateDTO commitmentmassUpdateDTO) throws MassUpdateServiceException {
+		log.debug("Commitment Controller: Commitment Mass Update ");
+		CommitmentMassUpdateDTO massUpdateDTO = commitmentMassUpdateService
+				.massUpdateCommitments(commitmentmassUpdateDTO);
+		return Optional.ofNullable(massUpdateDTO).map(ResponseEntity::ok)
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
